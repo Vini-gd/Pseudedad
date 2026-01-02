@@ -1,13 +1,17 @@
-[gd_scene load_steps=4 format=3 uid="uid://ddjvpc1njnw65"]
+[gd_scene load_steps=6 format=3 uid="uid://ddjvpc1njnw65"]
 
 [ext_resource type="Script" uid="uid://egfqj6vp3fo7" path="res://Scripts/Player/player.gd" id="1_5ni5v"]
 [ext_resource type="Texture2D" uid="uid://bcox5xxmvvab2" path="res://Assets/Player/spritesheet.png" id="1_vhr1b"]
+[ext_resource type="Script" uid="uid://dhncavjsvx3w6" path="res://Components/move_component.gd" id="3_v1key"]
+[ext_resource type="Script" uid="uid://d0xe6qogbljls" path="res://Components/input_component.gd" id="4_b63gh"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_5ni5v"]
 size = Vector2(13, 9)
 
-[node name="Player" type="CharacterBody2D"]
+[node name="Player" type="CharacterBody2D" node_paths=PackedStringArray("move_component", "input_component")]
 script = ExtResource("1_5ni5v")
+move_component = NodePath("MoveComponent")
+input_component = NodePath("InputComponent")
 
 [node name="Collision" type="CollisionShape2D" parent="."]
 position = Vector2(-0.5, 3.5)
@@ -16,3 +20,17 @@ shape = SubResource("RectangleShape2D_5ni5v")
 [node name="Texture" type="Sprite2D" parent="."]
 texture = ExtResource("1_vhr1b")
 hframes = 10
+
+[node name="MoveComponent" type="Node" parent="." node_paths=PackedStringArray("actor")]
+script = ExtResource("3_v1key")
+actor = NodePath("..")
+acceleration = 1000.0
+metadata/_custom_type_script = "uid://dhncavjsvx3w6"
+
+[node name="InputComponent" type="Node" parent="."]
+script = ExtResource("4_b63gh")
+metadata/_custom_type_script = "uid://d0xe6qogbljls"
+
+[node name="Camera2D" type="Camera2D" parent="."]
+zoom = Vector2(2, 2)
+position_smoothing_enabled = true
