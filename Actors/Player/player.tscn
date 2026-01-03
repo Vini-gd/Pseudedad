@@ -1,7 +1,8 @@
-[gd_scene load_steps=10 format=3 uid="uid://ddjvpc1njnw65"]
+[gd_scene load_steps=11 format=3 uid="uid://ddjvpc1njnw65"]
 
 [ext_resource type="Script" uid="uid://egfqj6vp3fo7" path="res://Scripts/Player/player.gd" id="1_5ni5v"]
 [ext_resource type="Texture2D" uid="uid://bcox5xxmvvab2" path="res://Assets/Player/spritesheet.png" id="1_vhr1b"]
+[ext_resource type="Script" uid="uid://bsdjxab7ki4yy" path="res://Actors/Camera/camera.gd" id="2_n7l8t"]
 [ext_resource type="Script" uid="uid://dhncavjsvx3w6" path="res://Components/move_component.gd" id="3_v1key"]
 [ext_resource type="Script" uid="uid://d0xe6qogbljls" path="res://Components/input_component.gd" id="4_b63gh"]
 
@@ -65,21 +66,39 @@ size = Vector2(13, 9)
 
 [node name="Player" type="CharacterBody2D" node_paths=PackedStringArray("move_component", "input_component", "animation", "walk_timer", "texture")]
 script = ExtResource("1_5ni5v")
-move_component = NodePath("MoveComponent")
-input_component = NodePath("InputComponent")
+move_component = NodePath("Components/MoveComponent")
+input_component = NodePath("Components/InputComponent")
 animation = NodePath("Animation")
 walk_timer = NodePath("WalkTimer")
 texture = NodePath("Texture")
+
+[node name="Components" type="Node" parent="."]
+
+[node name="MoveComponent" type="Node" parent="Components" node_paths=PackedStringArray("actor")]
+script = ExtResource("3_v1key")
+actor = NodePath("../..")
+speed = 125.0
+acceleration = 850.0
+friccion = 950.0
+metadata/_custom_type_script = "uid://dhncavjsvx3w6"
+
+[node name="InputComponent" type="Node" parent="Components"]
+script = ExtResource("4_b63gh")
+metadata/_custom_type_script = "uid://d0xe6qogbljls"
 
 [node name="Animation" type="AnimationPlayer" parent="."]
 libraries = {
 &"": SubResource("AnimationLibrary_isd1h")
 }
 autoplay = "Idle"
+speed_scale = 0.0
 
 [node name="Camera" type="Camera2D" parent="."]
-zoom = Vector2(2, 2)
 position_smoothing_enabled = true
+position_smoothing_speed = 3.0
+editor_draw_limits = true
+editor_draw_drag_margin = true
+script = ExtResource("2_n7l8t")
 
 [node name="Texture" type="Sprite2D" parent="."]
 texture = ExtResource("1_vhr1b")
@@ -89,18 +108,6 @@ hframes = 10
 position = Vector2(-0.5, 3.5)
 shape = SubResource("RectangleShape2D_5ni5v")
 
-[node name="MoveComponent" type="Node" parent="." node_paths=PackedStringArray("actor")]
-script = ExtResource("3_v1key")
-actor = NodePath("..")
-speed = 150.0
-acceleration = 950.0
-friccion = 980.0
-metadata/_custom_type_script = "uid://dhncavjsvx3w6"
-
-[node name="InputComponent" type="Node" parent="."]
-script = ExtResource("4_b63gh")
-metadata/_custom_type_script = "uid://d0xe6qogbljls"
-
 [node name="WalkTimer" type="Timer" parent="."]
-wait_time = 0.2
+wait_time = 0.1
 one_shot = true

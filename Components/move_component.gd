@@ -18,11 +18,12 @@ func apply_acceleration(delta : float, direction : Vector2, accel : float = acce
 	# A aceleração padrão é a especificada na variável de exportação, mas pode ser customizada, tal qual a 
 	# Velocidade.
 	velocity = velocity.move_toward(direction * sp, delta * accel);
-	actor.velocity = velocity;
 
 func apply_friccion(delta : float, fric : float = friccion) -> void:
 	# Semelhante ao apply acceleration, mas iremos reduzir a velocidade a 0
 	velocity = velocity.move_toward(Vector2.ZERO, delta * fric);
+
+func set_velocity() -> void:
 	actor.velocity = velocity;
 
 #endregion

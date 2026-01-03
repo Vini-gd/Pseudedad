@@ -3,7 +3,6 @@ class_name InputComponent extends Node
 #region Variáveis Específicas do Componente
 @export_category("Configurations")
 
-
 # Variáveis normais
 var input_direction : Vector2 = Vector2.ZERO;
 #endregion

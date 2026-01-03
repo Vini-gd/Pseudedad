@@ -10,12 +10,15 @@ class_name Player extends CharacterBody2D
 @export var animation : AnimationPlayer;
 @export var walk_timer : Timer;
 @export var texture : Sprite2D;
+@export var camera : Camera2D;
 
 # Variáveis normais
 var direction : Vector2;
 
 func _physics_process(delta: float) -> void:
 	direction = input_component.get_input_direction();
+	_handle_texture_flip();
+	move_component.set_velocity();
 	_movement_handler(delta);
 	move_and_slide();
 
@@ -25,10 +28,8 @@ func _movement_handler(delta : float) -> void:
 		move_component.apply_friccion(delta);
 		return
 	
-	if direction.x != 0.0:
-		_handle_texture_flip();
+	# Animações do Player (Por enquanto)
 	animation.play("Walk")
-	animation.speed_scale = 0.0;
 	if walk_timer.is_stopped():
 		if animation.current_animation_position > 0:
 			animation.seek(0);
@@ -39,5 +40,8 @@ func _movement_handler(delta : float) -> void:
 	move_component.apply_acceleration(delta, direction);
 
 func _handle_texture_flip() -> void:
-	# Fará o player dar Flip dependendo da direção
-	texture.flip_h = direction.x < 0;
+	# Fará o player dar Flip dependendo da posição do mouse
+	var diff : Vector2 = get_global_mouse_position() - global_position;
+	texture.flip_h = (sign(diff.x) != 1);
+	# Se a diferença nas posições for de 1, então o plasyer olhará para a direita
+	# Se a diferença nas posições for de -1, então o player olhará para a esquerda
